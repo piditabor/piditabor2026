@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIDI tábor 2026 – Trosečníci</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #e8d5a3;
+    --ocean: #1a6b8a;
+    --ocean-dark: #0d3d52;
+    --palm: #2d6a2d;
+    --sunset: #d4531a;
+    --cream: #faf6ed;
+    --dark: #1a1208;
+    --gold: #c9a227;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--dark);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at 70% 40%, rgba(26,107,138,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(212,83,26,0.25) 0%, transparent 50%),
+      linear-gradient(160deg, #0d2b38 0%, #1a4a5e 40%, #1a6b8a 70%, #c9a227 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23faf6ed' d='M0,80 C360,120 1080,0 1440,80 L1440,120 L0,120 Z'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+    z-index: 2;
+  }
+
+  /* waves */
+  .waves {
+    position: absolute;
+    bottom: 100px;
+    left: 0; right: 0;
+    height: 60px;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+    animation: wave 6s linear infinite;
+  }
+  .wave:nth-child(2) { animation-delay: -2s; animation-duration: 8s; opacity: .5; }
+  @keyframes wave {
+    0% { transform: translateX(0) scaleY(1); }
+    50% { transform: translateX(-25%) scaleY(0.7); }
+    100% { transform: translateX(-50%) scaleY(1); }
+  }
+
+  .hero-badge {
+    font-family: 'Cinzel', serif;
+    font-size: .75rem;
+    letter-spacing: .3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    border: 1px solid rgba(201,162,39,0.4);
+    padding: .35rem 1.2rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown .8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    line-height: 1.05;
+    letter-spacing: .02em;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    animation: fadeDown .8s .15s ease both;
+  }
+
+  .hero h1 span {
+    color: var(--gold);
+    display: block;
+    font-size: clamp(3.5rem, 10vw, 7.5rem);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.75);
+    letter-spacing: .1em;
+    margin-top: 1rem;
+    animation: fadeDown .8s .3s ease both;
+    text-align: center;
+  }
+
+  .hero-date {
+    margin-top: 2.5rem;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 1rem 2.5rem;
+    display: flex;
+    gap: 2.5rem;
+    animation: fadeDown .8s .45s ease both;
+    text-align: center;
+  }
+  .hero-date .stat { }
+  .hero-date .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    font-weight: 700;
+    display: block;
+  }
+  .hero-date .stat-label {
+    font-size: .75rem;
+    letter-spacing: .15em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+  }
+
+  .hero-cta {
+    margin-top: 2rem;
+    animation: fadeDown .8s .6s ease both;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: .85rem 2.2rem;
+    border-radius: 3px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .btn-primary {
+    background: var(--sunset);
+    color: #fff;
+    border: 2px solid var(--sunset);
+  }
+  .btn-primary:hover { background: #bf4715; border-color: #bf4715; transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.5);
+  }
+  .btn-outline:hover { border-color: #fff; transform: translateY(-2px); }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 1.5rem; }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  .section-label {
+    font-size: .7rem;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: .5rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ocean-dark);
+    margin-bottom: 1.5rem;
+  }
+
+  p { line-height: 1.8; color: #3a3020; margin-bottom: 1rem; }
+
+  /* ── STORY ── */
+  .story {
+    background: var(--ocean-dark);
+    color: rgba(255,255,255,0.85);
+    position: relative;
+    overflow: hidden;
+  }
+  .story::before {
+    content: '🌊';
+    font-size: 15rem;
+    position: absolute;
+    right: -2rem;
+    top: -2rem;
+    opacity: .05;
+  }
+  .story h2 { color: var(--sand); }
+  .story p { color: rgba(255,255,255,0.75); }
+  .story .section-label { color: var(--gold); }
+
+  /* ── INFO CARDS ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 6px;
+    padding: 2rem 1.5rem;
+    border-top: 4px solid var(--ocean);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform .2s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--ocean-dark);
+    margin-bottom: .5rem;
+    font-weight: 700;
+  }
+  .card p { font-size: .9rem; margin: 0; }
+
+  /* ── PRICE TABLE ── */
+  .price-section { background: #f0ebe0; }
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .price-table th {
+    background: var(--ocean);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: 1rem 1.5rem;
+    text-align: left;
+  }
+  .price-table td {
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid #f0ebe0;
+    font-size: .9rem;
+  }
+  .price-table tr:last-child td { border-bottom: none; }
+  .price-table tr:nth-child(even) td { background: #faf8f4; }
+  .price-highlight { font-weight: 700; color: var(--ocean-dark); }
+
+  /* ── PAYMENT ── */
+  .payment-box {
+    background: var(--ocean-dark);
+    color: #fff;
+    border-radius: 6px;
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .payment-box h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 1rem; }
+  .payment-box p { color: rgba(255,255,255,0.8); font-size: .9rem; margin-bottom: .5rem; }
+  .account-num {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    letter-spacing: .05em;
+    margin: .5rem 0 1rem;
+    display: block;
+  }
+
+  /* ── PACKING LIST ── */
+  .packing { background: var(--cream); }
+  .packing-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .packing-group h3 {
+    font-family: 'Cinzel', serif;
+    font-size: .95rem;
+    color: var(--ocean);
+    border-bottom: 2px solid var(--ocean);
+    padding-bottom: .4rem;
+    margin-bottom: .8rem;
+  }
+  .packing-group ul {
+    list-style: none;
+  }
+  .packing-group ul li {
+    font-size: .88rem;
+    padding: .25rem 0;
+    color: #3a3020;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .packing-group ul li::before {
+    content: '⚓';
+    position: absolute;
+    left: 0;
+    font-size: .6rem;
+    top: .45rem;
+  }
+
+  /* ── CONTACTS ── */
+  .contacts { background: var(--ocean-dark); }
+  .contacts h2 { color: var(--sand); }
+  .contacts .section-label { color: var(--gold); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .contact-item {
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 1.5rem;
+  }
+  .contact-item h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: .5rem; font-size: .95rem; }
+  .contact-item p { color: rgba(255,255,255,0.7); font-size: .88rem; margin: 0; }
+  .contact-item a { color: var(--sand); text-decoration: none; }
+  .contact-item a:hover { color: var(--gold); }
+
+  /* ── PRIHLASKA ── */
+  .prihlaska { background: #f0ebe0; }
+  .form-wrap {
+    background: #fff;
+    border-radius: 6px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-top: 2rem;
+  }
+  .form-note {
+    background: var(--ocean);
+    color: #fff;
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    font-size: .88rem;
+    margin-bottom: 1.5rem;
+  }
+  .form-note a { color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a1a22;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-size: .8rem;
+    letter-spacing: .05em;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,26,34,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .nav-brand {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 1rem;
+    letter-spacing: .1em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero-date { flex-direction: column; gap: 1rem; }
+    .price-table th, .price-table td { padding: .7rem 1rem; font-size: .82rem; }
+    .form-wrap { padding: 1.5rem; }
+  }
+
+  /* scroll padding for anchors */
+  html { scroll-behavior: smooth; }
+  section[id] { scroll-margin-top: 60px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">🏝 PIDI tábor 2026</a>
+  <div class="nav-links">
+    <a href="#info">Info</a>
+    <a href="#cena">Cena</a>
+    <a href="#baleni">Co zabalit</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="#prihlaska">Přihláška</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="padding-top:80px;">
+  <div class="hero-badge">PIDI tábor • 3. ročník</div>
+  <h1>Trosečníci<span>na ostrově</span></h1>
+  <p class="hero-subtitle">Rodinný tábor · Příroda · Dobrodružství · Přátelství</p>
+
+  <div class="hero-date">
+    <div class="stat">
+      <span class="stat-num">1. 8.</span>
+      <span class="stat-label">Příjezd</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8 dní</span>
+      <span class="stat-label">Délka tábora</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8. 8.</span>
+      <span class="stat-label">Odjezd</span>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#prihlaska" class="btn btn-primary">Přihlásit se</a>
+    <a href="#info" class="btn btn-outline">Více informací</a>
+  </div>
+
+  <div class="waves"><div class="wave"></div><div class="wave"></div></div>
+</div>
+
+<!-- STORY -->
+<section class="story">
+  <div class="container">
+    <div class="section-label">Příběh tábora</div>
+    <h2>Ztroskotali jste — co teď?</h2>
+    <p>Bouře roztrhala plachty. Loď se potopila. A vy jste se ocitli na pustém ostrově — jen s tím, co jste stihli zachránit, a s lidmi, kteří jsou vám nejbližší.</p>
+    <p>Tábor Trosečníci je dobrodružství, ve kterém celá rodina společně přežívá, spolupracuje a objevuje. Budujete přístřeší, hledáte zásoby, řešíte záhady a plníte výzvy. Každý den nové překvapení — každý večer sdílený oheň.</p>
+    <p>Přidejte se k nám. Ostrov čeká. 🌴</p>
+  </div>
+</section>
+
+<!-- INFO -->
+<section id="info">
+  <div class="container">
+    <div class="section-label">Základní informace</div>
+    <h2>Jak to funguje</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <h3>Termín</h3>
+        <p><strong>1. 8. – 8. 8. 2026</strong><br>Sraz do 12:00, začínáme obědem.<br>Odjezd cca v 9:00, končíme snídaní.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <h3>Doprava</h3>
+        <p>Příjezd a odjezd po vlastní ose. Parkování přímo na místě. Příjezdy a odjezdy lze dohodnout individuálně.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🍳</div>
+        <h3>Stravování</h3>
+        <p>Vaření společné na kamnech pod vedením zdatného kuchaře. Snídaně, oběd, svačiny, večeře.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏕</div>
+        <h3>Ubytování</h3>
+        <p>Stanování v přírodě. Prostudujte si info o táborovišti na <a href="https://www.tulak.org/taboriste" target="_blank">tulak.org/taboriste</a>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Program</h3>
+        <p>Celotáborová hra s tématem trosečníků, denní aktivity, soutěže, výlety a večerní program u ohně.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🩺</div>
+        <h3>Zdraví</h3>
+        <p>Zdravotnické vybavení pro drobná poranění zajištěno. Nejbližší nemocnice Dačice (8 km).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CENA -->
+<section id="cena" class="price-section">
+  <div class="container">
+    <div class="section-label">Platební informace</div>
+    <h2>Cena tábora</h2>
+    <p>Cena zahrnuje dopravu jídla na tábor, pronájem tábořiště, pravidelnou stravu, program a ostatní výdaje (lékárna, voda, technické vybavení).</p>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>Složení skupiny</th>
+          <th>Cena</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 rodič + 1 dítě</td>
+          <td class="price-highlight">4 000 Kč</td>
+        </tr>
+        <tr>
+          <td>1 rodič + 2 děti <em>nebo</em> 2 rodiče + 1 dítě</td>
+          <td class="price-highlight">5 000 Kč</td>
+        </tr>
+        <tr>
+          <td>2 rodiče + 2 děti</td>
+          <td class="price-highlight">6 000 Kč</td>
+        </tr>
+        <tr>
+          <td>Jiná kombinace / děti do 3 let</td>
+          <td>Cena k individuální domluvě</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="payment-box">
+      <h3>Platba</h3>
+      <p>Číslo účtu:</p>
+      <span class="account-num">1025237308 / 5500</span>
+      <p>Do poznámky pro příjemce napište: <strong>piditabor Jméno a příjmení dítěte</strong></p>
+      <br>
+      <p>🔸 <strong>Záloha 2 000 Kč</strong> — nejpozději do 31. 5. 2026</p>
+      <p>🔸 <strong>Doplatek</strong> — bude vypočítán individuálně, splatný do 30. 6. 2026</p>
+      <br>
+      <p style="font-size:.82rem; color:rgba(255,255,255,0.5)">Storno: Při oznámení do 20. 6. 2026 vrátíme 50 % zálohy. Po tomto datu výši vrácené částky stanovuje pořadatel dle hospodářského výsledku.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BALENI -->
+<section id="baleni" class="packing">
+  <div class="container">
+    <div class="section-label">Příprava na výpravu</div>
+    <h2>Co si zabalit</h2>
+    <p>Každý trosečník potřebuje správné vybavení. Níže najdete doporučený seznam — balte dle svých zkušeností.</p>
+
+    <div class="packing-cols">
+      <div class="packing-group">
+        <h3>Oblečení</h3>
+        <ul>
+          <li>Spodní prádlo min. 5×</li>
+          <li>Ponožky tenké 5× + teplé 2×</li>
+          <li>Trička s krátkým rukávem 7×</li>
+          <li>Dlouhé kalhoty 3×</li>
+          <li>Kraťasy 3×</li>
+          <li>Teplejší oblečení na spaní</li>
+          <li>Svetr / mikina 2×</li>
+          <li>Tenisky (spolehlivé)</li>
+          <li>Pantofle / crocsy / sandály</li>
+          <li>Větrovka (neprofoukne)</li>
+          <li>Pláštěnka (nutná!)</li>
+          <li>Plavky</li>
+          <li>Kšiltovka / šátek</li>
+          <li>Čepice + rukavice (chladné večery)</li>
+        </ul>
+      </div>
+      <div class="packing-group">
+        <h3>Osobní vybavení</h3>
+        <ul>
+          <li>Spacák (péřový nebo umělá vlákna)</li>
+          <li>Karimatka</li>
+          <li>Zubní kartáček a pasta</li>
+          <li>Mýdlo, šampón</li>
+          <li>Ručníky 2×</li>
+          <li>Kapesníky</li>
+          <li>Krém na opalování (vyšší faktor)</li>
+          <li>Sluneční brýle s UV filtrem</li>
+          <li>Jelení lůj + repelent</li>
+          <li>Kapesní nůž (s otvírákem)</li>
+          <li>Šití</li>
+          <li>Ešus (miska s víčkem) + lžíce + hrnek</li>
+          <li>Plastová lahev min. 1 litr</li>
+          <li>Baterka + náhradní baterie</li>
+          <li>Hodinky (raději starší)</li>
+          <li>Malý batůžek na výlet</li>
+          <li>Hadrový pytel na špinavé prádlo</li>
+          <li>Povlečení nebo deka na matraci</li>
+          <li>Psací potřeby a blok</li>
+          <li>Powerbank (el. zásuvky omezeny)</li>
+        </ul>
+      </div>
+      <div class="packing-group">
+        <h3>Pro volný čas</h3>
+        <ul>
+          <li>Knížka</li>
+          <li>Karty / společenské hry</li>
+          <li>Hudební nástroj</li>
+        </ul>
+        <h3 style="margin-top:1.5rem">Zanechte doma</h3>
+        <ul>
+          <li>Cennosti (drahé hodinky, šperky)</li>
+          <li>Drahé nebo nebezpečné hračky</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="contacts">
+  <div class="container">
+    <div class="section-label">Máte otázku?</div>
+    <h2>Kontakty</h2>
+    <p style="color:rgba(255,255,255,0.65)">Žádná otázka není špatná ani nadbytečná — neváhejte se ozvat!</p>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <h3>Organizátorka</h3>
+        <p>Bára<br>
+        <a href="tel:+420608963674">608 963 674</a><br>
+        <a href="mailto:piditabor@gmail.com">piditabor@gmail.com</a></p>
+      </div>
+      <div class="contact-item">
+        <h3>Adresa tábora</h3>
+        <p>PIDI tábor 2026<br>Dolní Bolíkov<br>p. Dačice, PSČ 380 01</p>
+      </div>
+      <div class="contact-item">
+        <h3>Nemocnice Dačice</h3>
+        <p>Antonínská 85/II, Dačice<br>
+        <a href="tel:+420384358211">+420 384 358 211</a></p>
+      </div>
+      <div class="contact-item">
+        <h3>Pohotovost Dačice</h3>
+        <p>Víkendy a svátky<br>Dospělí: 8–16 h<br>Děti: 8–14 h<br>
+        <a href="tel:+420384358276">+420 384 358 276</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIHLASKA -->
+<section id="prihlaska" class="prihlaska">
+  <div class="container">
+    <div class="section-label">Chci jet!</div>
+    <h2>Závazná přihláška</h2>
+    <p>Termín odevzdání přihlášky: <strong>nejpozději do 31. 5. 2026</strong></p>
+
+    <div class="form-wrap">
+      <div class="form-note">
+        📋 Vyplněnou přihlášku podepište, vyfoťte telefonem a pošlete na <a href="mailto:piditabor@gmail.com">piditabor@gmail.com</a>. Přihlášku si vytiskněte níže nebo si ji stáhněte jako PDF.
+      </div>
+
+      <p style="text-align:center; margin: 2rem 0;">
+        <a href="#" onclick="window.print(); return false;" class="btn btn-primary" style="margin-right:1rem">🖨 Vytisknout přihlášku</a>
+      </p>
+
+      <hr style="border:none; border-top:1px solid #eee; margin: 2rem 0;">
+
+      <!-- Přihláška k tisku -->
+      <div id="prihlaska-tisk">
+        <p style="text-align:center; font-family:'Cinzel',serif; font-size:1.4rem; color:#0d3d52; margin-bottom:.25rem">PIDI tábor 2026 – Trosečníci na ostrově</p>
+        <p style="text-align:center; color:#888; margin-bottom:2rem">Termín: 1. 8. – 8. 8. 2026 &nbsp;|&nbsp; Základní cena: 4 000 Kč</p>
+
+        <p style="font-weight:700; margin-bottom:1rem; color:#0d3d52">Účastník 1:</p>
+        <p>Jméno a příjmení: _______________________________________________</p>
+        <p>Datum narození a rodné číslo: _____________________________________</p>
+        <p>Bydliště: ______________________________________________________</p>
+        <br>
+        <p style="font-weight:700; margin-bottom:1rem; color:#0d3d52">Účastník 2:</p>
+        <p>Jméno a příjmení: _______________________________________________</p>
+        <p>Datum narození a rodné číslo: _____________________________________</p>
+        <p>Bydliště: ______________________________________________________</p>
+        <br>
+        <p style="font-weight:700; margin-bottom:1rem; color:#0d3d52">Účastník 3:</p>
+        <p>Jméno a příjmení: _______________________________________________</p>
+        <p>Datum narození a rodné číslo: _____________________________________</p>
+        <p>Bydliště: ______________________________________________________</p>
+        <br>
+        <p style="font-weight:700; margin-bottom:1rem; color:#0d3d52">Účastník 4:</p>
+        <p>Jméno a příjmení: _______________________________________________</p>
+        <p>Datum narození a rodné číslo: _____________________________________</p>
+        <p>Bydliště: ______________________________________________________</p>
+        <br>
+        <hr style="border:none; border-top:2px dashed #ccc; margin:2rem 0">
+
+        <p style="font-weight:700; margin-bottom:1rem; color:#0d3d52">Kontaktní údaje rodiče / zákonného zástupce:</p>
+        <p>Jméno a příjmení: _______________________________________________</p>
+        <p>Telefon (platný po dobu tábora): ____________________________________</p>
+        <p>E-mail: ________________________________________________________</p>
+        <br>
+
+        <p style="font-weight:700; margin-bottom:.5rem; color:#0d3d52">Zdravotní informace:</p>
+        <p>Alergie, chronická onemocnění, léky: __________________________________</p>
+        <p>_________________________________________________________________</p>
+        <br>
+
+        <p style="font-size:.85rem; color:#555; margin-bottom:1rem; line-height:1.7">
+          <strong>Prohlášení rodičů:</strong> Jsou mi známy dispozice provozu tábora, uvedl/a jsem veškeré závažné informace týkající se zdravotního stavu dítěte a veškeré další uváděné údaje jsou správné a úplné. Případné změny oznámím nejpozději před zahájením tábora písemnou formou na email piditabor@gmail.com. Telefonické spojení uvedené na přihlášce pro dobu konání tábora je platné. Dále se zavazuji uhradit veškeré škody, které dítě úmyslně způsobí. Zdravotní způsobilost dítěte je řešena čestným prohlášením zákonného zástupce, který nese plnou odpovědnost, a v den příjezdu prohlašuje, že jeho dítě/děti nevykazují známky infektu. Byl/a jsem informován/a o způsobech zpracování osobních údajů.
+        </p>
+
+        <p style="font-size:.85rem; color:#555; margin-bottom:1.5rem; line-height:1.7">
+          <strong>Souhlas s fotografováním:</strong> Souhlasím, aby pořadatelka Barbora Valešová používala na akci pořízené videozáznamy a fotografie zachycující podobu dítěte k dokumentaci a propagaci své činnosti (na dobu 10 let). &nbsp;&nbsp; <strong>ANO &nbsp; NE</strong><br><br>
+          <strong>Souhlas se zasíláním informací:</strong> Souhlasím se zasíláním informací o činnosti a nabídkách dalších aktivit (na dobu 2 let). &nbsp;&nbsp; <strong>ANO &nbsp; NE</strong><br><br>
+          <strong>BOZP:</strong> Prohlašuji, že jsem byl/a seznámen/a s BOZP akce a jsem si vědom/a, že veškeré aktivity jsou na moji zodpovědnost. &nbsp;&nbsp; <strong>ANO &nbsp; NE</strong>
+        </p>
+
+        <p>V ____________ dne _______ 2026 &nbsp;&nbsp;&nbsp; Podpis: _________________________________</p>
+        <br>
+        <p style="font-size:.8rem; color:#888; text-align:center">Vyplněnou přihlášku odevzdejte nejpozději do 31. 5. 2026 &nbsp;|&nbsp; piditabor@gmail.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>PIDI tábor</span> · Organizátorka: Barbora Valešová · <a href="mailto:piditabor@gmail.com" style="color:rgba(255,255,255,0.4)">piditabor@gmail.com</a></p>
+</footer>
+
+<style>
+@media print {
+  nav, .hero, .story, #info, .price-section, .packing, .contacts, footer,
+  .form-note, .btn, hr { display: none !important; }
+  .prihlaska { padding: 0 !important; }
+  .form-wrap { box-shadow: none; padding: 0; }
+  #prihlaska-tisk { display: block; }
+  body { color: #000; }
+}
+</style>
+
+</body>
+</html>
